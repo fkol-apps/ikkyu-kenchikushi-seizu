@@ -84,6 +84,36 @@ h2.sec::before{content:"";width:4px;height:16px;background:var(--acc);border-rad
 .hero .stats div{font-size:11px;opacity:.85;letter-spacing:.08em}
 .hero .stats b{display:block;font-size:22px;font-weight:800;letter-spacing:0;opacity:1}
 
+/* ---------- トップ：課題メイン ---------- */
+.kv{background:linear-gradient(135deg,#0f2f45 0%,#155e52 55%,#1d7d6c 100%);color:#fff;
+  border-radius:var(--r);padding:28px 26px 24px;margin:18px 0 14px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.kv::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;
+  background:rgba(255,255,255,.06)}
+.kv .lbl{font-size:12px;font-weight:800;letter-spacing:.16em;opacity:.85}
+.kv .ttl{font-size:34px;font-weight:900;letter-spacing:.04em;margin:6px 0 4px;line-height:1.25}
+.kv .ttl small{font-size:18px;font-weight:800;opacity:.85;margin-right:4px}
+.kv .sub{font-size:13px;opacity:.9}
+.kv .cd{display:inline-flex;align-items:baseline;gap:6px;margin-top:14px;padding:7px 16px;border-radius:24px;
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);font-size:13px;font-weight:800}
+.kv .cd b{font-size:24px;font-variant-numeric:tabular-nums}
+.kv .src{font-size:11px;opacity:.7;margin-top:12px}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.kcard{display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;padding:18px;
+  background:var(--panel);border:2px solid var(--acc);border-radius:var(--r);box-shadow:var(--sh);transition:.15s}
+.kcard:hover{transform:translateY(-2px);background:var(--accbg)}
+.kcard .no{font-size:11px;font-weight:900;letter-spacing:.14em;color:var(--acc)}
+.kcard .nm{font-size:17px;font-weight:900;line-height:1.45}
+.kcard .spec{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.kcard .spec span{font-size:11px;font-weight:700;color:var(--tx2);background:var(--panel2);
+  border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+.kcard .go{margin-top:auto;padding-top:8px;font-size:13px;font-weight:800;color:var(--acc)}
+.kcard .pr{font-size:11.5px;color:var(--tx3)}
+.minist{display:flex;gap:10px;flex-wrap:wrap}
+.minist div{flex:1;min-width:110px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+.minist div span{display:block;font-size:11px;font-weight:700;color:var(--tx3)}
+.minist div b{font-size:19px;font-weight:900;font-variant-numeric:tabular-nums}
+@media(max-width:600px){ .kv{padding:22px 18px 20px} .kv .ttl{font-size:27px} }
+
 .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
 .mode{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;
   text-align:left;box-shadow:var(--sh);transition:.15s;display:block;width:100%}
@@ -840,38 +870,44 @@ function home(){
   S=null; clearChrome(); window.scrollTo(0,0);
   const done=Object.keys(STATS).length;
   const avg=done?Math.round(Object.values(STATS).reduce((x,t)=>x+t.best,0)/done):0;
+  /* 試験日までの残り日数 */
+  const today=new Date(); today.setHours(0,0,0,0);
+  const days=Math.round((new Date(2026,9,11)-today)/86400000);
+  const cd = days>0 ? `試験まで あと<b>${days}</b>日`
+           : days===0 ? `<b>本日</b>が試験日です`
+           : `試験は終了しました`;
+
   app.innerHTML=`
-  <div class="hero">
-    <h1>計画の要点等 トレーニング</h1>
-    <p>設計製図試験の「計画の要点等」を設問形式で演習します。<br>
-       自分の言葉で書いた解答に、必須キーワードが含まれているかを自動で判定します。</p>
-    <div class="stats">
-      <div>収録設問<b>${QB.length}問</b></div>
-      <div>演習済み<b>${done}問</b></div>
-      <div>平均網羅率<b>${avg}%</b></div>
-      <div>実施回数<b>${HIST.length}回</b></div>
-    </div>
+  <div class="kv">
+    <div class="lbl">令和8年 一級建築士 設計製図試験</div>
+    <div class="ttl"><small>課題</small>「ホテル」</div>
+    <div class="sub"><span style="white-space:nowrap">試験日 令和8年10月11日（日）</span>　<span style="white-space:nowrap;opacity:.8">課題発表 令和8年7月24日</span></div>
+    <div class="cd">${cd}</div>
+    <div class="src">課題名は公益財団法人建築技術教育普及センターの公表による。以下の課題文はすべて本試験の形式で作成したオリジナルです。</div>
   </div>
 
-  <div class="card" style="border-color:var(--acc);background:var(--accbg);margin-top:18px">
-    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-      <div style="font-size:30px">🏨</div>
-      <div style="flex:1;min-width:200px">
-        <div style="font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--acc)">令和8年 設計製図試験の課題</div>
-        <div style="font-size:19px;font-weight:900;margin:2px 0">ホテル</div>
-        <div class="tiny">試験日 令和8年10月11日（日）／ 課題発表 令和8年7月24日</div>
-      </div>
-      <button class="btn" onclick="screenKadai()">設計課題を開く</button>
-    </div>
+  <div class="kgrid">
+    ${KADAI.map((K,i)=>{
+      const fl=(K.bldg.fl.match(/地上\d+階/)||[""])[0];
+      const rm=(K.cau.join("").match(/客室数の合計は(\d+)室/)||[])[1];
+      const ds=K.pts.filter(id=>STATS[id]);
+      const pr=ds.length?Math.round(ds.reduce((x,id)=>x+STATS[id].best,0)/ds.length):null;
+      return `<button class="kcard" onclick="KAi=${i};screenKadai()">
+        <span class="no">${esc(K.nm)}</span>
+        <span class="nm">${esc(K.sub)}</span>
+        <span class="spec">
+          <span>${esc(K.site.zone.replace("地域",""))}</span>
+          <span>${esc(fl)}</span>
+          ${rm?`<span>客室${rm}室</span>`:""}
+          <span>敷地${r0(K.site.area).toLocaleString()}㎡</span>
+        </span>
+        <span class="pr">${pr===null?"計画の要点等：未着手":`計画の要点等：${ds.length}/${K.pts.length}問 平均${pr}%`}</span>
+        <span class="go">この課題を開く →</span>
+      </button>`;}).join("")}
   </div>
 
-  <h2 class="sec">演習モードを選ぶ</h2>
+  <h2 class="sec">演習ツール</h2>
   <div class="modes">
-    <button class="mode" onclick="screenKadai()" style="border-color:var(--acc)">
-      <div class="ic">🏨</div><h3>設計課題（ホテル）</h3>
-      <p>本試験と同じ形式のオリジナル課題を${KADAI.length}題。敷地条件・要求室・計画の要点等が揃っており、ここから各機能に接続します。</p>
-      <span class="tag">まずここから</span>
-    </button>
     <button class="mode" onclick="startSet()">
       <div class="ic">📝</div><h3>通し演習</h3>
       <p>本番と同じく${SET_N}問をまとめて記述します。制限時間${SET_MIN}分つきで、1問あたりの時間感覚を身体に入れます。</p>
@@ -919,7 +955,18 @@ function home(){
     </button>
   </div>
 
-  <h2 class="sec">分野別の到達度</h2>
+  <h2 class="sec">学習状況</h2>
+  <div class="card">
+    <div class="minist">
+      <div><span>記述の収録設問</span><b>${QB.length}問</b></div>
+      <div><span>演習済み</span><b>${done}問</b></div>
+      <div><span>平均網羅率</span><b>${avg}%</b></div>
+      <div><span>法規ドリル正答率</span><b>${DR.cnt?pct(DR.ok,DR.cnt)+"%":"—"}</b></div>
+      <div><span>工程タイマー実績</span><b>${TMH.length}回</b></div>
+    </div>
+  </div>
+
+  <h2 class="sec">分野別の到達度（計画の要点等）</h2>
   <div class="card"><div class="catlist">
     ${CATS.map(c=>{
       const qs=byC(c), ds=qs.filter(q=>STATS[q.id]);
